@@ -103,7 +103,13 @@ async function run() {
             res.send(result);
         })
 
-
+        // GET PRODUCT DETAILS BY SPECIFIC ID
+        app.get("/productDetails/:id", async (req, res) => {
+            let id = req.params.id;
+            let query = { _id: new ObjectId(id) };
+            let result = await productsCollection.findOne(query);
+            res.send(result);
+        })
 
 
 
