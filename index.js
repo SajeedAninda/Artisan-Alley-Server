@@ -9,7 +9,7 @@ app.use(express.json());
 const port = 5000
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `${process.env.MONGO_URI}`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -90,10 +90,18 @@ async function run() {
         // API TO GET PRODUCTS ACCORDING TO CURRENT ARTISAN 
         app.get('/getProducts/:currentUserEmail', async (req, res) => {
             let userEmail = req.params.currentUserEmail;
-            console.log(userEmail);
+            // console.log(userEmail);
             let result = await productsCollection.find({ artisan_email: userEmail }).toArray();
             res.send(result);
         });
+
+        // API TO DELETE PRODUCT
+        app.delete("/deleteProduct/:id", async (req, res) => {
+            let id = req.params.id;
+            let query = { _id: new ObjectId(id) };
+            let result = await productsCollection.deleteOne(query);
+            res.send(result);
+        })
 
 
 
