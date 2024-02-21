@@ -111,6 +111,30 @@ async function run() {
             res.send(result);
         })
 
+        // UPDATE PRODUCT DETAILS 
+        app.patch("/updateProduct/:id", async (req, res) => {
+            const id = req.params.id;
+            const product = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedProduct = {
+                $set: {
+                    product_name: product.product_name,
+                    product_price: product.product_price,
+                    product_category: product.product_category,
+                    product_short_description: product.product_short_description,
+                    product_broad_description: product.product_broad_description,
+                    product_location: product.product_location
+                },
+            };
+            const result = await productsCollection.updateOne(
+                filter,
+                updatedProduct,
+                options
+            );
+            res.send(result);
+        });
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
