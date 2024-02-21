@@ -29,9 +29,10 @@ async function run() {
         // await client.db("admin").command({ ping: 1 });
 
         // DB COLLECTIONS 
-        const userCollection = client.db("Artisan").collection("users");
-        const upcomingEvents = client.db("Artisan").collection("upcomingEventsCollection");
-        const previousEvents = client.db("Artisan").collection("previousEventsCollection");
+        let userCollection = client.db("Artisan").collection("users");
+        let upcomingEvents = client.db("Artisan").collection("upcomingEventsCollection");
+        let previousEvents = client.db("Artisan").collection("previousEventsCollection");
+        let productsCollection = client.db("Artisan").collection("products");
 
 
 
@@ -44,9 +45,9 @@ async function run() {
 
         // POST USER DATA WITH GOOGLE LOGIN 
         app.post("/userGoogleRegister", async (req, res) => {
-            const userDetails = req.body;
+            let userDetails = req.body;
             let checkEmail = userDetails.email;
-            const existingUser = await userCollection.findOne({ email: checkEmail });
+            let existingUser = await userCollection.findOne({ email: checkEmail });
 
             if (existingUser) {
                 return res.status(409).json({ error: 'Email already exists' });
@@ -70,14 +71,30 @@ async function run() {
 
         // API TO GET CURRENT USER DATA 
         app.get("/userData/:email", async (req, res) => {
-            const email = req.params.email;
+            let email = req.params.email;
             // console.log(email)
-            const query = {
+            let query = {
                 email: email,
             };
-            const result = await userCollection.findOne(query);
+            let result = await userCollection.findOne(query);
             res.send(result);
         });
+
+        // POST PRODUCT DATA 
+        app.post("/products", async (req, res) => {
+            let productData = req.body;
+            let result = await productsCollection.insertOne(productData);
+            res.send(result);
+        })
+
+        // API TO GET PRODUCTS ACCORDING TO CURRENT ARTISAN 
+        app.get('/getProducts/:currentUserEmail', async (req, res) => {
+            let userEmail = req.params.currentUserEmail;
+            console.log(userEmail);
+            let result = await productsCollection.find({ artisan_email: userEmail }).toArray();
+            res.send(result);
+        });
+
 
 
 
