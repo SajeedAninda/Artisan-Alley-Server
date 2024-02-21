@@ -30,6 +30,8 @@ async function run() {
 
         // DB COLLECTIONS 
         const userCollection = client.db("Artisan").collection("users");
+        const upcomingEvents = client.db("Artisan").collection("upcomingEventsCollection");
+        const previousEvents = client.db("Artisan").collection("previousEventsCollection");
 
 
 
@@ -51,6 +53,29 @@ async function run() {
             }
 
             let result = await userCollection.insertOne(userDetails);
+            res.send(result);
+        });
+
+        // GET UPCOMING EVENTS 
+        app.get("/getUpcomingEvents", async (req, res) => {
+            let result = await upcomingEvents.find().toArray();
+            res.send(result);
+        })
+
+        // GET PREVIOUS EVENTS 
+        app.get("/getPreviousEvents", async (req, res) => {
+            let result = await previousEvents.find().toArray();
+            res.send(result);
+        })
+
+        // API TO GET CURRENT USER DATA 
+        app.get("/userData/:email", async (req, res) => {
+            const email = req.params.email;
+            // console.log(email)
+            const query = {
+                email: email,
+            };
+            const result = await userCollection.findOne(query);
             res.send(result);
         });
 
