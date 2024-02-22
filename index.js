@@ -173,6 +173,14 @@ async function run() {
             res.send(result);
         });
 
+        // API TO GET FAVOURITE PRODUCTS FOR PARTICULAR USER 
+        app.get("/getFavouriteProducts/:userEmail", async (req, res) => {
+            let email = req.params.userEmail
+            let query = { currentUserEmail: email };
+            let result = await favouritesCollection.find(query).toArray();
+            res.send(result);
+        })
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
