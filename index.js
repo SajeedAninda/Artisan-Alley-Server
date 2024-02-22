@@ -181,6 +181,14 @@ async function run() {
             res.send(result);
         })
 
+        // API TO DELETE FAVOURITE 
+        app.delete("/deleteFavourites/:id", async (req, res) => {
+            let id = req.params.id;
+            let query = { _id: new ObjectId(id) };
+            let result = await favouritesCollection.deleteOne(query);
+            res.send(result);
+        })
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
