@@ -87,10 +87,27 @@ async function run() {
             res.send(result);
         })
 
+        // GET ALL PRODUCTS DATA 
         app.get("/getAllProducts", async (req, res) => {
-            let result = await productsCollection.find().toArray();
-            res.send(result);
-        })
+            try {
+                let query = {};
+                if (req.query.searchValue) {
+                    query.product_name = { $regex: req.query.searchValue, $options: 'i' };
+                }
+                if (req.query.selectedCategory) {
+                    query.product_category = req.query.selectedCategory;
+                }
+                if (req.query.selectedLocation) {
+                    query.product_location = req.query.selectedLocation;
+                }
+                let result = await productsCollection.find(query).toArray();
+                res.send(result);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                res.status(500).send("Internal Server Error");
+            }
+        });
+        
 
         // API TO GET PRODUCTS ACCORDING TO CURRENT ARTISAN 
         app.get('/getProducts/:currentUserEmail', async (req, res) => {
