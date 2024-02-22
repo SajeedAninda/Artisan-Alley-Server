@@ -87,6 +87,11 @@ async function run() {
             res.send(result);
         })
 
+        app.get("/getAllProducts", async (req, res) => {
+            let result = await productsCollection.find().toArray();
+            res.send(result);
+        })
+
         // API TO GET PRODUCTS ACCORDING TO CURRENT ARTISAN 
         app.get('/getProducts/:currentUserEmail', async (req, res) => {
             let userEmail = req.params.currentUserEmail;
