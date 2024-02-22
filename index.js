@@ -33,6 +33,7 @@ async function run() {
         let upcomingEvents = client.db("Artisan").collection("upcomingEventsCollection");
         let previousEvents = client.db("Artisan").collection("previousEventsCollection");
         let productsCollection = client.db("Artisan").collection("products");
+        let favouritesCollection = client.db("Artisan").collection("favourites");
 
 
 
@@ -154,6 +155,21 @@ async function run() {
                 updatedProduct,
                 options
             );
+            res.send(result);
+        });
+
+        // API TO ADD TO FAVOURITES 
+        app.post("/favourites", async (req, res) => {
+            let favouritesData = req.body;
+            let existingFavourite = await favouritesCollection.findOne({
+                productId: favouritesData.productId,
+                currentUserEmail: favouritesData.currentUserEmail
+            });
+
+            if (existingFavourite) {
+                return res.status(400).send({ error: "Favourite already exists." });
+            }
+            let result = await favouritesCollection.insertOne(favouritesData);
             res.send(result);
         });
 
