@@ -34,6 +34,7 @@ async function run() {
         let previousEvents = client.db("Artisan").collection("previousEventsCollection");
         let productsCollection = client.db("Artisan").collection("products");
         let favouritesCollection = client.db("Artisan").collection("favourites");
+        let orderCollection = client.db("Artisan").collection("orders");
 
 
 
@@ -186,6 +187,13 @@ async function run() {
             let id = req.params.id;
             let query = { _id: new ObjectId(id) };
             let result = await favouritesCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        // POST ORDER DATA 
+        app.post("/addOrder", async (req, res) => {
+            let orderDetails = req.body;
+            let result = await orderCollection.insertOne(orderDetails);
             res.send(result);
         })
 
