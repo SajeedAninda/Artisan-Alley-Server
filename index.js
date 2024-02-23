@@ -109,7 +109,7 @@ async function run() {
                 res.status(500).send("Internal Server Error");
             }
         });
-        
+
 
         // API TO GET PRODUCTS ACCORDING TO CURRENT ARTISAN 
         app.get('/getProducts/:currentUserEmail', async (req, res) => {
@@ -194,6 +194,14 @@ async function run() {
         app.post("/addOrder", async (req, res) => {
             let orderDetails = req.body;
             let result = await orderCollection.insertOne(orderDetails);
+            res.send(result);
+        })
+
+        // API TO GET ORDERS FOR PARTICULAR USER 
+        app.get("/getOrdersForUser/:userEmail", async (req, res) => {
+            let email = req.params.userEmail
+            let query = { client_email: email };
+            let result = await orderCollection.find(query).toArray();
             res.send(result);
         })
 
