@@ -205,6 +205,14 @@ async function run() {
             res.send(result);
         })
 
+        // API TO GET ORDERS FOR PARTICULAR ARTISAN 
+        app.get("/getOrdersForArtisan/:userEmail", async (req, res) => {
+            let email = req.params.userEmail
+            let query = { artisan_email: email };
+            let result = await orderCollection.find(query).toArray();
+            res.send(result);
+        })
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
