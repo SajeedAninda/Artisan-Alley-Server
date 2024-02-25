@@ -219,6 +219,12 @@ async function run() {
             res.send(result);
         })
 
+        // API TO GET ALL ARTISANS
+        app.get("/getAllArtisan", async (req, res) => {
+            let result = await userCollection.find({ role: "artisan" }).toArray();
+            res.send(result);
+        })
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
