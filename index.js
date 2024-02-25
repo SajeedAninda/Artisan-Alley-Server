@@ -213,6 +213,12 @@ async function run() {
             res.send(result);
         })
 
+        // API TO GET MOST RECENT FOUR PRODUCTS 
+        app.get("/getMostRecentProducts", async (req, res) => {
+            let result = await productsCollection.find().sort({ addedTime: -1 }).limit(4).toArray();
+            res.send(result);
+        })
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
