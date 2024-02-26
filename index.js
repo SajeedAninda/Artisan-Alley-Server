@@ -233,6 +233,14 @@ async function run() {
             res.send(result);
         })
 
+        // INDIVIDUAL PRODUCTS FROM ARTISAN 
+        app.get("/getProductsFromArtisan/:email", async (req, res) => {
+            let artisanEmail = req.params.email;
+            let query = { artisan_email: artisanEmail };
+            let result = await productsCollection.find(query).toArray();
+            res.send(result);
+        })
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
