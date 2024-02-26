@@ -225,6 +225,14 @@ async function run() {
             res.send(result);
         })
 
+        // API TO GET ALL ARTISANS DETAILS BY ID
+        app.get("/getArtisanDetails/:id", async (req, res) => {
+            let id = req.params.id;
+            let query = { _id: new ObjectId(id) };
+            let result = await userCollection.findOne(query);
+            res.send(result);
+        })
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
