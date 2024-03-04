@@ -3,7 +3,7 @@ Artisan Alley is a dynamic marketplace where artisans from various backgrounds c
 
 
 ## Repo Intro
-This Repo Contains the client side code of the Artisan Alley Project
+This Repo Contains the server side code of the Artisan Alley Project
 
 ## Table of Contents
 - [Features](#features)
